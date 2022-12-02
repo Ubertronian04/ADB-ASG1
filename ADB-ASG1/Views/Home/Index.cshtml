@@ -1,0 +1,24 @@
+﻿@model ADB_ASG1.Models.CreditCardStatement
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row d-flex align-items-center" style="min-height:80vh;">
+    <div class="col-8">
+        <h1>Welcome to ADB eBank</h1>
+        <h4 class="text-muted">How can we help you today?</h4>
+    </div>
+    <div class="col-4">
+        @if(Context.Session.GetString("CustId") == null)
+        {
+            <a asp-action="Login" asp-controller="Home" class="btn btn-outline-primary btn-lg text-capitalize font-weight-bolder">Login</a>
+        } else
+        {
+            <h4>Current Date: @Context.Session.GetString("CurrentDate")</h4>
+        }
+        
+    </div>
+</div>
+
+<script await src="~/js/site.js" asp-append-version="true"></script>

@@ -1,0 +1,66 @@
+﻿@model ADB_ASG1.Models.MonthlyStatementViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    string statementDate = Model.CCStatement?.ccsBillDate.Date.ToString("MMM yyyy") ?? Convert.ToDateTime(Context.Session.GetString("CurrentDate")).ToString("MMM yyyy");
+}
+
+<div class="container">
+    @if (Model.CCStatement == null)
+    {
+        <hr />
+        <h4 class="text-center">Monthly Statement for @statementDate</h4>
+        <hr />
+        <span>Your monthly credit card statement has not been issued yet. Please try again later.</span>
+    }
+    else
+    {
+        <hr />
+        <h4 class="text-center">Monthly Statement for @statementDate</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-6 text-right">
+                @Html.DisplayNameFor(model => model.CCStatement.ccsNo)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model.CCStatement.ccsNo)
+            </dd>
+            <dt class="col-sm-6 text-right">
+                @Html.DisplayNameFor(model => model.CCStatement.ccsBillDate)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model.CCStatement.ccsBillDate)
+            </dd>
+            <dt class="col-sm-6 text-right">
+                @Html.DisplayNameFor(model => model.CCStatement.ccsPayDueDate)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model.CCStatement.ccsPayDueDate)
+            </dd>
+            <dt class="col-sm-6 text-right">
+                @Html.DisplayNameFor(model => model.CCStatement.ccsCashback)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model.CCStatement.ccsCashback)
+            </dd>
+            <dt class="col-sm-6 text-right">
+                @Html.DisplayNameFor(model => model.CCStatement.ccsTotalAmountDue)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model.CCStatement.ccsTotalAmountDue)
+            </dd>
+            <dt class="col-sm-6 text-right">
+                @Html.DisplayNameFor(model => model.CCLimit)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model.CCLimit)
+            </dd>
+            <dt class="col-sm-6 text-right">
+                @Html.DisplayNameFor(model => model.CCCurrentBal)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model.CCCurrentBal)
+            </dd>
+        </dl>
+    }
+</div>
