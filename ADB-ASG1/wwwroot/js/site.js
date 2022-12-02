@@ -47,6 +47,27 @@ var ccsBanner = setInterval(function () {
 
             if (sessionStorage.getItem("ObjId") != null)
                 clearInterval(ccsBanner);
+            else {
+                const custId = sessionStorage.getItem("CustId");
+                const jsondata = { "custId": custId, "hasNewCCS": false };
+                var settings = {
+                    "async": true,
+                    "crossDomain": true,
+                    "url": "https://adbasg1-89bc.restdb.io/rest/adbcustomer",
+                    "method": "POST",
+                    "headers": {
+                        "content-type": "application/json",
+                        "x-apikey": APIKEY,
+                        "cache-control": "no-cache"
+                    },
+                    "processData": false,
+                    "data": JSON.stringify(jsondata)
+                }
+
+                $.ajax(settings).done(function (response) {
+                    console.log(response);
+                });
+            }
 
             sessionStorage.setItem("ObjId", customer._id);
             if (customer.hasNewCCS) {
