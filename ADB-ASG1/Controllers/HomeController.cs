@@ -24,6 +24,8 @@ namespace ADB_ASG1.Controllers
 
         public ActionResult Login()
         {
+            if (HttpContext.Session.GetString("CustId") != null)
+                return RedirectToAction("Index");
             return View();
         }
 
@@ -47,6 +49,7 @@ namespace ADB_ASG1.Controllers
             {
                 string ccNo = custContext.getCustCreditCard(checkCust.Id);
                 HttpContext.Session.SetString("CustId", checkCust.Id);
+                HttpContext.Session.SetString("CustName", checkCust.Name);
                 HttpContext.Session.SetString("CCNo", ccNo);
                 DateTime dt = Convert.ToDateTime(HttpContext.Session.GetString("CurrentDate"));
                 if (dt.Day == DateTime.DaysInMonth(dt.Year, dt.Month))

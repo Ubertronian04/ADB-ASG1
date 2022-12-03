@@ -1,0 +1,66 @@
+﻿@model ADB_ASG1.Models.CreditCard
+
+@{
+    ViewData["Title"] = "ViewCreditCard";
+}
+
+<div class="container">
+    <hr />
+    <h4 class="text-center">Credit Card</h4>
+    <hr />
+    @if (Model.CCNo == null)
+    {
+        <span>Your monthly credit card statement has not been issued yet. Please try again later.</span>
+    }
+    else
+    {
+        <div class="container">
+            <div class="container-fluid" style="max-width:500px;">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">ADBeBank</h4>
+                        <div class="card-text d-inline-flex pt-4 text-center">
+                            <h2 class="mr-3">@Model.CCNo.Substring(0, 4)</h2>
+                            <h2 class="mr-3">@Model.CCNo.Substring(4, 4)</h2>
+                            <h2 class="mr-3">@Model.CCNo.Substring(8, 4)</h2>
+                            <h2>@Model.CCNo.Substring(12, 4)</h2>
+                        </div>
+                        <div class="card-text d-flex pt-1 align-items-center">
+                            <div>
+                                <p class="my-0">VALID</p>
+                                <p>THRU</p>
+                            </div>
+                            <p class="px-3">@Model.ValidThru</p>
+                            <div class="d-flex position-absolute mr-3" style="right:0;">
+                                <p class="my-0">CVV</p>
+                                <p class="px-2">@Model.CVV</p>
+                            </div>
+                        </div>
+                        <h5 class="m-0">@Context.Session.GetString("CustName")</h5>
+                    </div>
+                </div>
+            </div>
+
+            <dl class="m-auto pt-2" style="max-width:500px">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CreditLimit)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.CreditLimit)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CurrentBal)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.CurrentBal)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Status)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Status)
+                </dd>
+            </dl>
+        </div>
+    }
+</div>

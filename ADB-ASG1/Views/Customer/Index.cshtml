@@ -1,0 +1,70 @@
+﻿@model ADB_ASG1.Models.Customer
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    <hr />
+    <h4 class="text-center">Account Details</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-6 text-right">
+            @Html.DisplayNameFor(model => model.NRIC)
+        </dt>
+        <dd class = "col-sm-6">
+            @Html.DisplayFor(model => model.NRIC)
+        </dd>
+        <dt class = "col-sm-6 text-right">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-6">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-6 text-right">
+            @Html.DisplayNameFor(model => model.DOB)
+        </dt>
+        <dd class = "col-sm-6">
+            @Html.DisplayFor(model => model.DOB)
+        </dd>
+        <dt class = "col-sm-6 text-right">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class = "col-sm-6">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt class = "col-sm-6 text-right">
+            @Html.DisplayNameFor(model => model.Contact)
+        </dt>
+        <dd class = "col-sm-6">
+            @Html.DisplayFor(model => model.Contact)
+        </dd>
+        <dt class = "col-sm-6 text-right">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-6">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class = "col-sm-6 text-right">
+            @Html.DisplayNameFor(model => model.AnnualIncome)
+        </dt>
+        <dd class = "col-sm-6">
+            @Html.DisplayFor(model => model.AnnualIncome)
+        </dd>
+        <dt class = "col-sm-6 text-right">
+            @Html.DisplayNameFor(model => model.JoinDate)
+        </dt>
+        <dd class = "col-sm-6">
+            @Html.DisplayFor(model => model.JoinDate)
+        </dd>
+        <dt class = "col-sm-6 text-right">
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+        <dd class = "col-sm-6">
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+    </dl>
+</div>
+<div class="text-center">
+    <a asp-action="Edit">Update Account Details</a>
+</div>

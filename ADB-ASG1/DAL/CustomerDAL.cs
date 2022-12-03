@@ -7,6 +7,7 @@ using System.Threading;
 using System.IO;
 using System.Data.SqlClient;
 using System.Data;
+using System.Diagnostics;
 using ADB_ASG1.Models;
 
 namespace ADB_ASG1.DAL
@@ -83,6 +84,67 @@ namespace ADB_ASG1.DAL
             conn.Close();
 
             return c;
+        }
+
+        public CreditCard GetCreditCardDetails(string custId)
+        {
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT * FROM CreditCard WHERE CCCustId=@selectedId";
+            cmd.Parameters.AddWithValue("@selectedId", custId);
+
+            //Open a database connection and execute the SQL statement
+            conn.Open();
+            CreditCard cc = new CreditCard();
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            if (reader.HasRows)
+            { //Records found
+                while (reader.Read())
+                {
+                    cc.CCNo = reader.GetString(0);
+                    cc.CVV = reader.GetString(1);
+                    cc.ValidThru = reader.GetString(2);
+                    cc.CreditLimit = reader.GetDecimal(3);
+                    cc.CurrentBal = reader.GetDecimal(4);
+                    cc.Status = reader.GetString(5);
+                    cc.CustId = reader.GetString(6);
+                }
+            }
+
+            reader.Close();
+
+            conn.Close();
+
+            return cc;
+        }
+
+        public void CreateCustomer(Customer c)
+        {
+            //Get stored procedure from database
+            // TODO add stored procedure
+            SqlCommand cmd = new SqlCommand("uspCreateCustomer", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@C", c.NRIC);
+            cmd.Parameters.AddWithValue("@CurrentDate", c.Name);
+            cmd.Parameters.AddWithValue("@CurrentDate", c.DOB);
+            cmd.Parameters.AddWithValue("@CurrentDate", c.Address);
+            cmd.Parameters.AddWithValue("@CurrentDate", c.Contact);
+            cmd.Parameters.AddWithValue("@CurrentDate", c.Email);
+            cmd.Parameters.AddWithValue("@CurrentDate", c.AnnualIncome);
+
+            //open database connection
+            conn.Open();
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx.Message);
+            }
+
+            //close connection
+            conn.Close();
         }
     }
 }
