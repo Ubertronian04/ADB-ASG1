@@ -10,7 +10,7 @@ namespace ADB_ASG1.Models
     {
         public string Id { get; set; }
         [StringLength(9, MinimumLength = 9, ErrorMessage = "NRIC must be 9 characters long")]
-        [RegularExpression(@"(?i)^[STFG]\d{1-7}[A-Z]$", ErrorMessage = "NRIC must begin and end with a Letter")]
+        [RegularExpression(@"^[STFG]\d{7}[A-Z]$", ErrorMessage = "NRIC must begin and end with a Letter")]
         [Required]
         public string NRIC { get; set; }
         [StringLength(50, ErrorMessage = "Name cannot be more than 50 characters long")]

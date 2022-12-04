@@ -93,5 +93,86 @@ namespace ADB_ASG1.DAL
 
             return ccsViewModel;
         }
+
+        public List<MonthlyStatementViewModel> GetAllCreditCardStatements(string ccNo)
+        {
+            //Create a SqlCommand object from connection object
+            SqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT * FROM CreditCardStatementView WHERE CCNo=@CCNo ORDER BY CCSNo DESC";
+            cmd.Parameters.AddWithValue("@CCNo", ccNo);
+
+            //open database connection
+            conn.Open();
+            //Execute reader
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            List<MonthlyStatementViewModel> msViewModelList = new List<MonthlyStatementViewModel>();
+            while (reader.Read())
+            {
+                msViewModelList.Add(
+                    new MonthlyStatementViewModel
+                    {
+                        CCStatement = new CreditCardStatement
+                        {
+                            ccsNo = reader.GetString(0),
+                            ccsBillDate = reader.GetDateTime(1),
+                            ccsPayDueDate = reader.GetDateTime(2),
+                            ccsCashback = reader.GetDecimal(3),
+                            ccsTotalAmountDue = reader.GetDecimal(4)
+                        },
+                        CCLimit = reader.GetDecimal(6),
+                        CCCurrentBal = reader.GetDecimal(7)
+                    });
+            }
+
+            //Close DataReader
+            reader.Close();
+            //Close database connection
+            conn.Close();
+
+            return msViewModelList;
+        }
+        public List<CardTransaction> GetMonthlyCardTransactions(string nric, DateTime dt)
+        {
+            //Get stored procedure from database
+            SqlCommand cmd = new SqlCommand("uspCustomerMonthlyDetail", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("@NRIC", nric);
+            cmd.Parameters.AddWithValue("@Date", dt);
+
+            List<CardTransaction> ctList = new List<CardTransaction>();
+
+            //open database connection
+            conn.Open();
+            try
+            {
+                //Execute reader
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        ctList.Add(
+                            new CardTransaction
+                            {
+                                CTNo = reader.GetString(0),
+                                Merchant = reader.GetString(1),
+                                Amount = reader.GetDecimal(2),
+                                Date = reader.GetDateTime(3),
+                                Status = reader.GetString(4),
+                                CCNo = reader.GetString(5),
+                                CCSNo = reader.GetString(6)
+                            });
+                    }
+                }
+            }
+            catch (SqlException sqlEx)
+            {
+                Debug.WriteLine(sqlEx.Message);
+            }
+
+            return ctList;
+        }
     }
 }

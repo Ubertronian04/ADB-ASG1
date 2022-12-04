@@ -17,9 +17,10 @@ namespace ADB_ASG1.Controllers
         // GET: MonthlyStatementController
         public ActionResult Index()
         {
+            string custId = HttpContext.Session.GetString("CustId");
             string ccNo = HttpContext.Session.GetString("CCNo");
             //Stop access if action is not logged in
-            if (ccNo == null)
+            if (custId == null)
                 return RedirectToAction("Index", "Home");
             DateTime dateNow = Convert.ToDateTime(HttpContext.Session.GetString("CurrentDate"));
             //Get monthly statement for customer
@@ -43,67 +44,34 @@ namespace ADB_ASG1.Controllers
             return View();
         }
 
-        // GET: MonthlyStatementController/Create
-        public ActionResult Create()
+        public ActionResult ViewAllMonthlyStatements()
         {
-            return View();
+            string custId = HttpContext.Session.GetString("CustId");
+            string ccNo = HttpContext.Session.GetString("CCNo");
+            //Stop access if action is not logged in
+            if (custId == null)
+                return RedirectToAction("Index", "Home");
+            List<MonthlyStatementViewModel> msViewModelList = ccsContext.GetAllCreditCardStatements(ccNo);
+
+            return View(msViewModelList);
         }
 
-        // POST: MonthlyStatementController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult ViewMonthlyTransactions()
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            string custId = HttpContext.Session.GetString("CustId");
+            //Stop access if action is not logged in
+            if (custId == null)
+                return RedirectToAction("Index", "Home");
 
-        // GET: MonthlyStatementController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+            string nric = HttpContext.Session.GetString("CustNRIC");
+            List<CardTransaction> ctList = new List<CardTransaction>();
+            DateTime dateNow = Convert.ToDateTime(HttpContext.Session.GetString("CurrentDate"));
+            if (dateNow.Day == DateTime.DaysInMonth(dateNow.Year, dateNow.Month))
+                ctList = ccsContext.GetMonthlyCardTransactions(nric, dateNow);
+            else
+                ctList = ccsContext.GetMonthlyCardTransactions(nric, dateNow.AddMonths(-1));
 
-        // POST: MonthlyStatementController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: MonthlyStatementController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: MonthlyStatementController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return View(ctList);
         }
     }
 }

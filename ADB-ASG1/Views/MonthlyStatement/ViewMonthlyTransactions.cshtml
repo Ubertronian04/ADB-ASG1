@@ -1,0 +1,54 @@
+﻿@model IEnumerable<ADB_ASG1.Models.CardTransaction>
+
+@{
+    ViewData["Title"] = "ViewMonthlyTransactions";
+}
+
+<div class="container">
+    <h3 class="pt-3 pb-1">All Transactions</h3>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Merchant)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+            </tr>
+        </thead>
+        @if (Model.ToList().Count > 0)
+        {
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Merchant)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Amount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        }
+    </table>
+    @if (Model.ToList().Count == 0)
+    {
+        <span class="text-secondary">No records found.</span>
+    }
+</div>

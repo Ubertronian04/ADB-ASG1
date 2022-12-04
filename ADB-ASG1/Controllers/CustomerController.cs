@@ -15,9 +15,11 @@ namespace ADB_ASG1.Controllers
         // GET: CustomerController
         public ActionResult Index()
         {
-            if (HttpContext.Session.GetString("CustId") == null)
+            string custId = HttpContext.Session.GetString("CustId");
+            if (custId == null)
                 return RedirectToAction("Index", "Home");
-            return View();
+            Customer c = custContext.GetCustomer(custId);
+            return View(c);
         }
 
         // GET: CustomerController/Create
@@ -34,8 +36,11 @@ namespace ADB_ASG1.Controllers
         public ActionResult Create(Customer cust)
         {
             if (ModelState.IsValid)
+            {
                 // TODO: insert customer into database
+                custContext.CreateCustomer(cust);
                 return RedirectToAction("Index", "Home");
+            }
             else
                 return View(cust);
         }
@@ -54,7 +59,10 @@ namespace ADB_ASG1.Controllers
         public ActionResult Edit(Customer c)
         {
             if (ModelState.IsValid)
+            {
+                custContext.UpdateCustomer(c, HttpContext.Session.GetString("CustId"));
                 return RedirectToAction(nameof(Index));
+            }
             else
                 return View(c);
         }
@@ -63,10 +71,11 @@ namespace ADB_ASG1.Controllers
         public ActionResult ViewCreditCard()
         {
             string custId = HttpContext.Session.GetString("CustId");
+            string ccNo = HttpContext.Session.GetString("CCNo");
             if (custId == null)
                 return RedirectToAction("Index", "Home");
 
-            CreditCard cc = custContext.GetCreditCardDetails(custId);
+            CreditCard cc = custContext.GetCreditCardDetails(ccNo, custId);
             return View(cc);
         }
     }

@@ -17,7 +17,7 @@ namespace ADB_ASG1.Controllers
         private CustomerDAL custContext = new CustomerDAL();
         public IActionResult Index()
         {
-            HttpContext.Session.SetString("CurrentDate", /*DateTime.Now.ToString()*/"2022-12-31 00:00:00");
+            HttpContext.Session.SetString("CurrentDate", /*DateTime.Now.ToString()*/"2022-10-12 00:00:00");
 
             return View();
         }
@@ -50,6 +50,7 @@ namespace ADB_ASG1.Controllers
                 string ccNo = custContext.getCustCreditCard(checkCust.Id);
                 HttpContext.Session.SetString("CustId", checkCust.Id);
                 HttpContext.Session.SetString("CustName", checkCust.Name);
+                HttpContext.Session.SetString("CustNRIC", checkCust.NRIC);
                 HttpContext.Session.SetString("CCNo", ccNo);
                 DateTime dt = Convert.ToDateTime(HttpContext.Session.GetString("CurrentDate"));
                 if (dt.Day == DateTime.DaysInMonth(dt.Year, dt.Month))

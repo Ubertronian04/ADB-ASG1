@@ -1,59 +1,73 @@
-﻿@model IEnumerable<ADB_ASG1.Models.CreditCardStatement>
+﻿@model IEnumerable<ADB_ASG1.Models.MonthlyStatementViewModel>
 
 @{
     ViewData["Title"] = "ViewAllMonthlyStatements";
 }
 
-<h1>ViewAllMonthlyStatements</h1>
+<div class="container">
+    <h3 class="pt-3 pb-1">All Monthly Statements</h3>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ccsNo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ccsBillDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ccsPayDueDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ccsCashback)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ccsTotalAmountDue)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ccsNo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ccsBillDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ccsPayDueDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ccsCashback)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ccsTotalAmountDue)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CCStatement.ccsNo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CCStatement.ccsBillDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CCStatement.ccsPayDueDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CCStatement.ccsCashback)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CCStatement.ccsTotalAmountDue)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CCLimit)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CCCurrentBal)
+                </th>
+            </tr>
+        </thead>
+        @if (Model.ToList().Count > 0)
+        {
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CCStatement.ccsNo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CCStatement.ccsBillDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CCStatement.ccsPayDueDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CCStatement.ccsCashback)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CCStatement.ccsTotalAmountDue)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CCLimit)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CCCurrentBal)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        }
+    </table>
+    @if (Model.ToList().Count == 0)
+    {
+        <span class="text-secondary">No records found.</span>
+    }
+</div>
+
