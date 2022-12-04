@@ -260,9 +260,9 @@ GO
 
 
 
--- ==============================================
+-- =========================================================
 -- || ~ Monthly Credit Card Statement (Bill) & Cashback ~ || --
--- ==============================================
+-- =========================================================
 
 /* ------TEST DATA------
 SELECT * FROM CreditCard
@@ -483,9 +483,7 @@ GO
 /* ------TEST DATA------
 SELECT * FROM CardTransaction
 
-DECLARE @date DATETIME
-SET @date = CONVERT(DATETIME, '2023-03-05 00:00:00')
-EXEC uspGetCustomerRewards @date
+EXEC uspGetCustomerRewards 3, 2023
 
 EXEC uspGetMerchantWithMostTransactions
 INSERT INTO CardTransaction VALUES ('T000000013', 'ADB Travel','700','2022-12-1','Failed', '5395164704886973', NULL)
@@ -514,22 +512,23 @@ RETURN
 GO
 
 -- ** Details of customers who have earned rewards in the current month. **
-CREATE PROC uspGetCustomerRewards(@CurrentDate DATETIME = NULL)
+CREATE PROC uspGetCustomerRewards(@CurrentMonth SMALLINT = NULL, @CurrentYear SMALLINT = NULL)
 AS
-	-- Default value is current date
-	IF (@CurrentDate IS NULL)
-		SET @CurrentDate = GETDATE()
 
-	PRINT MONTH(@CurrentDate)
-	PRINT YEAR(@CurrentDate)
+	-- Default value is current year
+	IF (@CurrentYear IS NULL)
+		SET @CurrentYear = YEAR(GETDATE())
+
+	-- Default value is current month
+	IF (@CurrentMonth IS NULL)
+		SET @CurrentMonth = MONTH(GETDATE())
 
 	SELECT c.CustId, c.CustName, r.*
 	FROM Customer c
 	INNER JOIN CreditCard cc ON cc.CCCustId = c.CustId
 	INNER JOIN Reward r ON r.RewCCNo = cc.CCNo
-	WHERE MONTH(DATEADD(MONTH, -6, r.RewValidTill)) = MONTH(@CurrentDate) AND YEAR(DATEADD(MONTH, -6, r.RewValidTill)) = YEAR(@CurrentDate)
+	WHERE MONTH(DATEADD(MONTH, -6, r.RewValidTill)) = @CurrentMonth AND YEAR(DATEADD(MONTH, -6, r.RewValidTill)) = @CurrentYear
 RETURN
-
 GO
 -- ** The name of the merchant that the most number of transactions were made to. **
 CREATE PROC uspGetMerchantWithMostTransactions
