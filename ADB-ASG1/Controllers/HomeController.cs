@@ -17,7 +17,7 @@ namespace ADB_ASG1.Controllers
         private CustomerDAL custContext = new CustomerDAL();
         public IActionResult Index()
         {
-            HttpContext.Session.SetString("CurrentDate", /*DateTime.Now.ToString()*/"2022-10-12 00:00:00");
+            HttpContext.Session.SetString("CurrentDate", DateTime.Now.ToString()/*"2022-10-12 00:00:00"*/);
 
             return View();
         }
